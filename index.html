@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Easy example | CartoDB.js</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+    
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
+    <![endif]-->
+    <link rel="stylesheet" href="css/l.geosearch.mod.css" />
+      <!--libraries kept to a minimum. Bootstrap could be used a la carte here, but I'm being lazy-->
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<!--  <script src="js/leaflet-hash.js"></script>-->
+<!--  <script src="js/l.geosearch.mod.js">  </script>-->
+      <script src="js/l.control.geosearch.mod.js">  </script>
+
+      <script src="js/l.geosearch.provider.google.js">  </script>
+
+<!--        <script src="js/bing.js"></script>-->
+<!--    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>-->
+   
+    
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      .list {
+        position: absolute;
+        background: white;
+        top: 180px;
+        left: 20px;
+        padding: 20px;
+        z-index: 10;
+      }
+    </style>
+
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" />
+    <![endif]-->
+  </head>
+  <body>
+    <div id="map"></div>
+    <div class="list">
+      <a href="#" class="link">open infowindow</a>
+    </div>
+
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.uncompressed.js"></script>
+
+    <script>
+      function openInfowindow(layer, latlng, cartodb_id) {
+        layer.trigger('featureClick', null, latlng, null, { cartodb_id: cartodb_id }, 0);
+      }
+
+
+      function main() {
+
+        cartodb.createVis('map', 'http://nzlur.cartodb.com/api/v2/viz/00f582aa-824c-11e4-886f-0e018d66dc29/viz.json', {
+            shareable: false,
+            title: false,
+            description: false,
+            search: false,
+            tiles_loader: true,
+            center_lat: 40.723536,
+            center_lon: -74.168837,
+            zoom: 12,
+            legends: false
+        })
+        .done(function(vis, layers) {
+          // layer 0 is the base layer, layer 1 is cartodb layer
+          var layer = layers[1];
+            var basemap = layers[0];
+          $('#map').click(function() {
+            openInfowindow(layer, [40.723536, -74.168837], 5324)
+            return false;
+          });
+//var basemap = layers[0];
+//    var zoningmap = layers[1];
+//    zoningmap.layer.setZindex(4);
+//    console.log(zoningmap);
+    console.log(basemap);
+    var map = vis.getNativeMap();
+    console.log(map);
+
+//    GEOCODER CONTROLS
+       new L.Control.GeoSearch({
+           provider: new L.GeoSearch.Provider.Google({
+//               region: region
+//               componentRestrictions: {"administrativeArea":"NJ", "locality":"Newark"}
+               componentRestrictions: {"locality":"Newark"}
+
+           }),
+           position: 'topcenter'
+       }).addTo(map);
+        })
+        .error(function(err) {
+          console.log(err);
+        });
+      }
+
+      window.onload = main;
+    </script>
+  </body>
+</html>
