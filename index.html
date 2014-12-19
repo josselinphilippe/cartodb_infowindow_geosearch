@@ -77,17 +77,23 @@
           // layer 0 is the base layer, layer 1 is cartodb layer
           var layer = layers[1];
             var basemap = layers[0];
-          $('#map').click(function() {
-            openInfowindow(layer, [40.723536, -74.168837], 5324)
-            return false;
-          });
+
 //var basemap = layers[0];
 //    var zoningmap = layers[1];
 //    zoningmap.layer.setZindex(4);
 //    console.log(zoningmap);
     console.log(basemap);
     var map = vis.getNativeMap();
-    console.log(map);
+//            $('#map').on("click", (function() {
+//            openInfowindow(layer, [40.723536, -74.168837], 5324);
+////            return false;
+//          });
+//            marker = new L.marker();
+//L.marker.on.addListener('click', function(marker) {
+//  popup.setContent(marker.desc);
+//  popup.setLatLng(marker.getLatLng());
+//  map.openPopup(popup);
+////    console.log(map);
 
 //    GEOCODER CONTROLS
        new L.Control.GeoSearch({
