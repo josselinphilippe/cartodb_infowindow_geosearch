@@ -187,7 +187,7 @@ L.Control.GeoSearch = L.Control.extend({
                 this._positionMarker.setLatLng([location.Y, location.X]);
         }
 
-        this._map.setView([location.Y, location.X], this._config.zoomLevel, false);
+//        this._map.setView([location.Y, location.X], this._config.zoomLevel, false);
         
   
         
@@ -200,8 +200,8 @@ L.Control.GeoSearch = L.Control.extend({
         
         //console error: Uncaught TypeError: Cannot read property 'lat' of undefined 
         // location coordinates format works for other Leaflet methods in this block of code
-        
-        console.log([location.Y, location.X]);
+//        
+//        console.log([location.Y, location.X]);
         console.log(location);
     },
 
