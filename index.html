@@ -58,8 +58,25 @@
       function openInfowindow(layer, latlng, cartodb_id) {
         layer.trigger('featureClick', null, latlng, null, { cartodb_id: cartodb_id }, 0);
       }
-
-
+//        function getCartodb_ID(latlng) {
+//var json = "http://nzlur.cartodb.com/api/v2/sql?q=SELECT%20cartodb_id%20FROM%20zoning%20where%20ST_intersects(the_geom,%20cdb_latlng(40.731877,-74.17368999999997))"; 
+//            
+//           
+//    // Get the 'items' from the first group.
+//                var items = json.rows[0];
+//    console.log(items);
+// }
+         $.getJSON("http://nzlur.cartodb.com/api/v2/sql?q=SELECT%20cartodb_id%20FROM%20zoning%20where%20ST_intersects(the_geom,%20cdb_latlng(40.731877,-74.17368999999997))", function(data) {
+  var items = data.rows[0];
+               
+                // Find the last index and the last item.
+                var cartodb_id = items.cartodb_id;
+             console.log(cartodb_id);
+    // do something!
+  });
+//});
+          
+           
       function main() {
 
         cartodb.createVis('map', 'http://nzlur.cartodb.com/api/v2/viz/00f582aa-824c-11e4-886f-0e018d66dc29/viz.json', {
@@ -84,10 +101,12 @@
 //    console.log(zoningmap);
     console.log(basemap);
     var map = vis.getNativeMap();
-//            $('#map').on("click", (function() {
-//            openInfowindow(layer, [40.723536, -74.168837], 5324);
-////            return false;
-//          });
+           
+            map.on("geosearch_showlocation", function(data) {
+                console.log(data);
+            openInfowindow(layer, [data.Location.Y, data.Location.X], 5324);
+            return false;
+          });
 //            marker = new L.marker();
 //L.marker.on.addListener('click', function(marker) {
 //  popup.setContent(marker.desc);
