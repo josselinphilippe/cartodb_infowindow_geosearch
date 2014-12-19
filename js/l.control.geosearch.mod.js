@@ -74,10 +74,10 @@ L.Control.GeoSearch = L.Control.extend({
         this._container.appendChild(this._msgbox);
 
         L.DomEvent
-          .addListener(this._container, 'click', L.DomEvent.stop)
+//          .addListener(this._container, 'click', L.DomEvent.stop)
           .addListener(this._searchbox, 'keypress', this._onKeyUp, this);
 
-        L.DomEvent.disableClickPropagation(this._container);
+//        L.DomEvent.disableClickPropagation(this._container);
 
         return this._container;
     },
@@ -166,6 +166,10 @@ L.Control.GeoSearch = L.Control.extend({
         }
     },
 // use fireEvent to change behaviour
+    
+    //http://stackoverflow.com/questions/14756420/emulate-click-on-leaflet-map-item
+    
+    //LEAFLET MAP EVENTS API http://leafletjs.com/reference.html#mouse-event
     _processResults: function(results) {
         if (results.length > 0) {
             this._map.fireEvent('geosearch_foundlocations', {Locations: results});
@@ -181,16 +185,24 @@ L.Control.GeoSearch = L.Control.extend({
                 this._positionMarker = L.marker([location.Y, location.X]).addTo(this._map);
             else
                 this._positionMarker.setLatLng([location.Y, location.X]);
-            var coordinates = ([location.Y, location.X]);
-            console.log(coordinates);
         }
 
         this._map.setView([location.Y, location.X], this._config.zoomLevel, false);
+        
+  
+        
         this._map.fireEvent('geosearch_showlocation', {Location: location});
-//        this._map.fireEvent(function() {
-//            openInfowindow(layer, [40.723536, -74.17368999999997], 2479)
-//            return false;
-//          });
+        
+//        this._map.fireEvent('click', [location.Y, location.X]);
+        
+        //emulate a click event to trigger cartodb popup 
+        // ! Cannot log click in console
+        
+        //console error: Uncaught TypeError: Cannot read property 'lat' of undefined 
+        // location coordinates format works for other Leaflet methods in this block of code
+        
+        console.log([location.Y, location.X]);
+        console.log(location);
     },
 
     _printError: function(message) {
