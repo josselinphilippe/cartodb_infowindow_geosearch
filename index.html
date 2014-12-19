@@ -57,25 +57,8 @@
     <script>
       function openInfowindow(layer, latlng, cartodb_id) {
         layer.trigger('featureClick', null, latlng, null, { cartodb_id: cartodb_id }, 0);
-      }
-//        function getCartodb_ID(latlng) {
-//var json = "http://nzlur.cartodb.com/api/v2/sql?q=SELECT%20cartodb_id%20FROM%20zoning%20where%20ST_intersects(the_geom,%20cdb_latlng(40.731877,-74.17368999999997))"; 
-//            
-//           
-//    // Get the 'items' from the first group.
-//                var items = json.rows[0];
-//    console.log(items);
-// }
-         $.getJSON("http://nzlur.cartodb.com/api/v2/sql?q=SELECT%20cartodb_id%20FROM%20zoning%20where%20ST_intersects(the_geom,%20cdb_latlng(40.731877,-74.17368999999997))", function(data) {
-  var items = data.rows[0];
-               
-                // Find the last index and the last item.
-                var cartodb_id = items.cartodb_id;
-             console.log(cartodb_id);
-    // do something!
-  });
-//});
-          
+      };
+ 
            
       function main() {
 
@@ -95,24 +78,30 @@
           var layer = layers[1];
             var basemap = layers[0];
 
-//var basemap = layers[0];
-//    var zoningmap = layers[1];
-//    zoningmap.layer.setZindex(4);
-//    console.log(zoningmap);
+
     console.log(basemap);
     var map = vis.getNativeMap();
            
             map.on("geosearch_showlocation", function(data) {
-                console.log(data);
-            openInfowindow(layer, [data.Location.Y, data.Location.X], 5324);
-            return false;
+//                console.log(data.Location.Y, data.Location.X);
+               var lat = (data.Location.Y);
+                var lng = (data.Location.X);
+                
+                function getCartdb_id(latlng) {
+         $.getJSON("http://nzlur.cartodb.com/api/v2/sql?q=SELECT%20cartodb_id%20FROM%20zoning%20where%20ST_intersects(the_geom,%20cdb_latlng("+lat+","+lng+"))", function(data) {
+  var items = data.rows[0];
+               
+                // Find the last index and the last item.
+                var cartodb_id = items.cartodb_id;
+             map.setView([lat, lng], 15, false);
+             openInfowindow(layer, [lat, lng], cartodb_id);
+             //add more styling with coordinates, cdb_id
+             //setcartoCSS
+  });
+        };
+               getCartdb_id();
           });
-//            marker = new L.marker();
-//L.marker.on.addListener('click', function(marker) {
-//  popup.setContent(marker.desc);
-//  popup.setLatLng(marker.getLatLng());
-//  map.openPopup(popup);
-////    console.log(map);
+
 
 //    GEOCODER CONTROLS
        new L.Control.GeoSearch({
