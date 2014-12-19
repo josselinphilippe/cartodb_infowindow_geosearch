@@ -74,10 +74,10 @@ L.Control.GeoSearch = L.Control.extend({
         this._container.appendChild(this._msgbox);
 
         L.DomEvent
-//          .addListener(this._container, 'click', L.DomEvent.stop)
+          .addListener(this._container, 'click', L.DomEvent.stop)
           .addListener(this._searchbox, 'keypress', this._onKeyUp, this);
 
-//        L.DomEvent.disableClickPropagation(this._container);
+        L.DomEvent.disableClickPropagation(this._container);
 
         return this._container;
     },
@@ -188,20 +188,10 @@ L.Control.GeoSearch = L.Control.extend({
         }
 
 //        this._map.setView([location.Y, location.X], this._config.zoomLevel, false);
-        
-  
-        
         this._map.fireEvent('geosearch_showlocation', {Location: location});
-        
 //        this._map.fireEvent('click', [location.Y, location.X]);
-        
-        //emulate a click event to trigger cartodb popup 
-        // ! Cannot log click in console
-        
-        //console error: Uncaught TypeError: Cannot read property 'lat' of undefined 
-        // location coordinates format works for other Leaflet methods in this block of code
-//        
-//        console.log([location.Y, location.X]);
+//        this._map.fireEvent('click', [location.X, location.Y]);
+        console.log([location.Y, location.X]);
         console.log(location);
     },
 
